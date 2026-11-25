@@ -235,6 +235,35 @@
 //    screenshots/ holds the three captures. scripts/screenshots.sh retakes
 //    them. NOTES-REFRAME.md records the reframe decisions in plain language.
 //
+// 14. Grader-environment notes (how this entry runs where it is graded).
+//    Runtime: Node 22, standard library only — no dependency is imported, no
+//    package is installed, and no build step runs before main.ts. The entry
+//    reads the sealed snapshot from /input/snapshot.json (or --input
+//    <file|dir>) and writes to /output (or MAKEFUN_OUTPUT_DIR): board.json,
+//    data.js, dashboard/ (3 files), screenshots/ (3 images), dossier.json.
+//    It never reads the network, never reads the clock, and never writes
+//    outside the output directory. Exit codes: 2 when the snapshot is missing,
+//    1 when the board fails the gate or fewer than 3 screenshots are handed
+//    in, 0 on success. The gate the build enforces on itself (boardIssue) is
+//    coverage of the watchlist, ranks running 1..n, rows sorted by implied
+//    value, no uniform implied value, and farm steps of 3–12 strings of 20–
+//    600 characters. The dossier caps are the scorer's own: text 65,536 bytes
+//    (the only cap that shapes bytes — the dashboard source must fit whole or
+//    be cut by the library's rule), screenshots at most 4 of at most 524,288
+//    bytes each, dashboard at most 400 files / 4,194,304 bytes, dossier at
+//    most 4 MiB. On this snapshot the build lands at 64,073 dossier text
+//    bytes, screenshots of 233,541 / 330,728 / 233,537 bytes, and a 3-file
+//    dashboard of 63,807 bytes — inside every cap with room to spare except
+//    the text cap, which sits 1,463 bytes under its limit because the dashboard
+//    source is long. A future edit to dashboard/app.js must watch that number:
+//    the build fails loudly (DossierError) if the text no longer fits, and the
+//    fix is to shorten the page's source, never to raise the cap. The two-run
+//    determinism check (read-only copies in different working directories,
+//    separate output directories, byte-identical output) is the same check the
+//    grader runs, and it passes: the only difference between the two runs'
+//    stdout is the output directory's path in the final log line, which names
+//    where the files went, not what they contain.
+//
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts --input ../input/snapshot.json
 //

@@ -1330,6 +1330,74 @@ export interface RadarRow {
  * it that way; is_comp says whether the protocol is one of the 118 comps the fit
  * learned from.
  */
+// ---------------------------------------------------------------- dashboard contract (reframe only)
+//
+// How the dashboard's controls work — the contract between this file's data and
+// dashboard/app.js, written down so a reader can check the page against it.
+//
+// Filters (pre-token track). Search matches name or slug, case-insensitive,
+// substring. Category and chain filter on the row's own category and chains
+// (a row with no category reads as 'Other'). Launch odds is a minimum (any /
+// 30%+ / 50%); TVL is a minimum (any / $100M+ / $500M+ / $1B+); growth is the
+// growth tier (down / flat / up / strong); watchlist-only keeps the 40
+// watchlist rows. All filters combine with AND, and the count line under the
+// controls always states how many rows match out of the 198 ranked, so a
+// filter that matches nothing says so instead of silently showing an empty
+// table. The live track has no filters: it is 24 rows, always shown whole,
+// always ordered by |log deviation|.
+//
+// Sorts (pre-token track). Rank, protocol name, TVL, implied value, launch
+// odds, and age sort on click; a second click reverses the direction. Every
+// numeric sort breaks ties on rank, and the name sort is a plain code-unit
+// comparison, so the order is deterministic: the same clicks always produce
+// the same table. The default sort is implied value, descending, which is the
+// board's own order (rank 1 first). Sorting never changes a row's rank: the
+// rank column is the board's rank, and a re-sorted table shows rows out of
+// rank order with their ranks still attached, which is why the rank column is
+// always visible.
+//
+// The 55-row cap. The main table shows the first 55 matching rows and a button
+// to show all of them. Fifty-five is a presentation choice, not a model choice:
+// the board still holds 198 rows, the count line still states the full match,
+// and the toggle reveals the rest in place. The cap exists because a screen
+// that shows 198 rows at once is a dump, not a screen; the reframe's thesis is
+// that the reader should see the top of the board and choose to go deeper. The
+// watchlist section below the table is not capped: all 40 watchlist rows are
+// listed, because the watchlist is a named set the reader asked to see whole.
+// The detail view opens on a row click (or a #p=<slug> deep link) and shows
+// that one protocol's decomposition, uncertainty, scatter position, farm plan,
+// and farm steps; the farm sliders (deposit, slice) recompute the detail
+// view's farm table and the compare table live, using the same arithmetic as
+// lib/model.ts, and the masthead badge counts the rows the page reproduces
+// exactly from the raw figures (198/198 on this snapshot).
+//
+// Deep links. #p=<slug> selects a protocol; #focus=1 puts its detail view at
+// the top of the page (this is how the detail screenshot is taken).
+// #category=<name>, #chain=<name>, #tab=<pre-token|live>, #growth=<tier>,
+// #deposit=<dollars>, and #slice=<percent> set the controls; the filtered
+// screenshot uses #category=Risk%20Curators&deposit=5000&slice=20. A hash the
+// page does not recognise is ignored, never an error, and the page renders the
+// unfiltered board. No hash value ever reaches the network: there is no
+// network. The exports (CSV, JSON) download the currently filtered and sorted
+// rows with the same columns the table shows, plus the growth tier and the
+// farm figures at the current slider settings; the CSV header names every
+// column, and the JSON is an array of row objects.
+//
+// Compare. Up to three rows can be checked for comparison; a fourth check is
+// refused with the checkbox left unchecked, and the compare table lists
+// implied value, P25–P75 band, rank range, TVL, launch odds, net at the
+// current deposit, dollars per hour, and verdict. Compare is a side-by-side
+// read, not a ranking: it never scores the compared rows against each other,
+// and it never adds a column the detail view does not already show.
+//
+// What the page never does. It never fetches, never calls the network, never
+// reads the clock (no Date, no unseeded Math.random), never writes anywhere,
+// and never invents a number: every figure on it comes from data.js, which
+// main.ts wrote from the sealed snapshot. The only randomness in the page's
+// own code is none; the only seeded randomness anywhere in the build is in
+// the model's bootstrap and 5-fold splits, which run at build time, not in
+// the browser.
+
 export interface LiveRow {
   slug: string;
   name: string;
