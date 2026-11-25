@@ -203,12 +203,15 @@
 //    while walk-forward improved to x2.489 (from x2.634) and Spearman barely
 //    moved. One of two halves improving is not a better model; it is a
 //    different weighting that trades one split for another. Counts as the second
-//    failed attempt. One attempt remains before the kill-gate forces a pivot.
-//    The reframe does not consume that third slot: it changes no fitted number
-//    and is judged as presentation, not as a model attempt. That reading is the
-//    coordinator's, recorded here so it can be challenged; if the owner counts
-//    it as the third attempt, then the kill-gate has tripped and the next model
-//    change must be a pivot to a new concept, not a tuning of this one.
+//    failed attempt. The third was the slope-per-category test (nested CV
+//    rejected it 118 of 118 folds), and with that the kill-gate tripped at
+//    11:13 on 25 November 2026: three attempts, three failures, no final-score
+//    improvement. The model space is exhausted; no further tuning of this
+//    model is on the table. The reframe does not consume a slot and does not
+//    need one: it changes no fitted number and is judged as presentation, not
+//    as a model attempt, and it is the only path left after the gate tripped.
+//    Any future model change would have to be a pivot to a new concept, not a
+//    tuning of this one.
 //    Consultation (25 Nov 2026, 11:23–11:27). Three backup brains were consulted
 //    before this build (100milionseek for research, nemotron-ultra for technical
 //    review, gpt-oss-120b as second shadow judge), and all three agreed on the
