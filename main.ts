@@ -264,6 +264,26 @@
 //    stdout is the output directory's path in the final log line, which names
 //    where the files went, not what they contain.
 //
+// 15. Pre-submit checklist (for the owner, at submit time — not run by this
+//    build). Re-bundle the transcripts from the top-level agent after the
+//    build session ends, with --muse-usage attached (the subagent's usage rows
+//    appear only then). Run the kit check and require every check to pass
+//    except the ones the site itself decides at submission (repo_public,
+//    repo_owner, repo_created_after_open, commit_in_repo, duplicate_snapshot).
+//    Confirm the repository is public on GitHub under the account's login (or
+//    carries .makefun/owner.json naming an entry wallet), the submitted commit
+//    is pushed, and the commit hash in the submit command is the checked one.
+//    Confirm the quota (5 a day, 10 in all; 3 used before this build) and the
+//    deadline (14 December 2026, 10:00 UTC). Confirm the dossier text is
+//    whole (no "[Cut at" line) and the three screenshots are the current
+//    dashboard's. Read the run record once: handed-off prompt in the owner's
+//    own words, system prompt uploaded, instruction files collected, no MCP
+//    server, parent chat chain complete. Then submit with the owner's explicit
+//    approval, save the receipt (submission id, claim code, bundle sha), and
+//    track the rank until the deadline: the last submission before it is the
+//    final entry, and a revision needs quota, time, and a concrete improvement
+//    — not a re-roll for its own sake.
+//
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts --input ../input/snapshot.json
 //

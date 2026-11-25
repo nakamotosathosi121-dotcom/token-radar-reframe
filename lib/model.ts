@@ -1398,6 +1398,34 @@ export interface RadarRow {
 // the model's bootstrap and 5-fold splits, which run at build time, not in
 // the browser.
 
+// ---------------------------------------------------------------- farm economics and the reframe (reframe only)
+//
+// The farm scenario does not change in the reframe, but where it is shown does,
+// and the reason is worth stating. The scenario ($1,000 deposit, a 10% airdrop
+// slice shared pro-rata by TVL, setup gas by first chain, $2 of weekly gas,
+// exit gas, and the T-bill opportunity cost of the deposit over the hold) is a
+// what-if about a single protocol: it asks whether farming that protocol pays
+// under stated assumptions. It is therefore a detail-view question, not a
+// ranking question: the net dollars per hands-on hour of one protocol tell a
+// reader whether to farm it, and they tell nothing about whether it ranks
+// above its neighbour. Radar-4 showed the verdict in the main table, which
+// invited exactly that misreading — a FARM pill next to a rank reads as a
+// second ranking. The reframe moves the verdict, the net, and the dollars per
+// hour into the detail view and the compare table, and the main table keeps
+// only the screening chips, which are descriptive by design. The scenario's
+// input is the implied value (the middle of the range), not the range: a
+// scenario needs one number to net against costs, and the page states in the
+// detail view that the number is the middle of a x11.9-wide range, so the net
+// inherits that width — a protocol whose net is $8 at the middle is deeply
+// negative at the P25 end and comfortably positive at the P75 end, and the
+// break-even odds and break-even slice in the same table are the honest way to
+// read that: they say how far reality must move from the middle for the
+// scenario to break even. Nothing about the farm arithmetic changed: the same
+// farmEconomics and farmSteps in this file feed the same board.json rows, and
+// the page's sliders recompute the same arithmetic with the reader's own
+// deposit and slice. The only farm change in the reframe is placement, and
+// placement is the point: a scenario belongs next to the protocol it is about.
+
 export interface LiveRow {
   slug: string;
   name: string;
